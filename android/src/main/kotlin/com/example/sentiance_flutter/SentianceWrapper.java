@@ -180,7 +180,7 @@ public class SentianceWrapper implements MetaUserLinker, OnSdkStatusUpdateHandle
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(ACTION_SDK_STATUS_UPDATED));
         updateToServer(sdkStatus);
        
-       // Sentiance.getInstance(mContext).invokeDummyVehicleCrash();
+        Sentiance.getInstance(mContext).invokeDummyVehicleCrash();
    
        }
 
