@@ -58,6 +58,7 @@ class SentianceFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
  
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
+        Log.e("TAG", "onMethodCall");
         if (call.method == "enableLocation") {
             if (!PermissionManager(activity).getNotGrantedPermissions().isEmpty()) {
                 val intent = Intent(activity, PermissionCheckActivity::class.java)
@@ -139,7 +140,7 @@ class SentianceFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             getToken()
             updateDataToApi();
         } else {
-            Log.e("TAG", "refreshStatus: NOT_INITIALIZED ")
+            Log.e("TAG", "refreshStatus: NOT_INITIALIZED_refreshStatus ")
         }
     }
 
