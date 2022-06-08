@@ -97,7 +97,7 @@ class SentianceFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 refreshStatus()
                 result.success(Sentiance.getInstance(context).sdkStatus.startStatus.name)
             } else {
-                result.success("NOT_INITIALIZED")
+                result.success("NOT_INITIALIZED_getSentianceData")
             }
         } else if (call.method == "stopSdk") {
             SentianceWrapper(context).stopSentianceSdk()
@@ -112,7 +112,7 @@ class SentianceFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 var data = Sentiance.getInstance(context).sdkStatus;
                 result.success(data);
             } else {
-                result.success("NOT_INITIALIZED");
+                result.success("NOT_INITIALIZED_statusSdk");
             }
 
         }
@@ -125,7 +125,7 @@ class SentianceFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
            
             result.success(data);
           } else {
-              result.success("NOT_INITIALIZED")
+              result.success("NOT_INITIALIZED_getMobileHealthData")
           }
         }
         else {
