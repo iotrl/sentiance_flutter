@@ -123,6 +123,11 @@ class SentianceFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 result.success("NOT_INITIALIZED");
             }
 
+        } else if(call.method == "dummycrash")
+        {
+            Sentiance.getInstance(context).createDummyCrash;
+            result.success("dummycrash");
+
         }
         else if(call.method == "getMobileHealthData")
         {

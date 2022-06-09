@@ -140,12 +140,12 @@ class Cache {
     void setUserId(String customerId)
     {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        sharedPreferences.edit().putString(KEY_CUSTOMER_ID, customerId).apply(); 
+        sharedPreferences.edit().putString(KEY_USER_ID, user_id).apply(); 
     }
     String getUserId()
     {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(KEY_CUSTOMER_ID, null);
+        return sharedPreferences.getString(KEY_USER_ID, null);
     }
 }
 

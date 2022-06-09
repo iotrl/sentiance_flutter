@@ -203,6 +203,10 @@ public class SentianceWrapper implements MetaUserLinker, OnSdkStatusUpdateHandle
 
     }
 
+    public void createDummyCrash(){
+        Sentiance.getInstance(mContext).invokeDummyVehicleCrash();
+    }
+
     private void saveCrashDetectionData(String time,String lat, String lon)
     {
 
@@ -225,15 +229,15 @@ public class SentianceWrapper implements MetaUserLinker, OnSdkStatusUpdateHandle
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.e(TAG, e.toString());
-                Log.e("CrashDetection","Failed");
+                Log.e("CrashDetectionF","Failed");
 
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 Log.w(TAG, response.body().string());
-                
-                Log.e("CrashDetection","Success");
+                Log.e("CrashDetectionRes", response.body().string());
+                Log.e("CrashDetectionRes","Success");
             }
 
         });
