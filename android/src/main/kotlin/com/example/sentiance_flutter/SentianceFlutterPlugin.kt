@@ -58,7 +58,7 @@ class SentianceFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
  
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-        Log.e("TAG", "onMethodCall");
+        Log.e("LogS", "onMethodCall");
         if (call.method == "enableLocation") {
             if (!PermissionManager(activity).getNotGrantedPermissions().isEmpty()) {
                 val intent = Intent(activity, PermissionCheckActivity::class.java)
@@ -96,40 +96,50 @@ class SentianceFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         } else if (call.method == "getSentianceData") {
             if (Sentiance.getInstance(context).initState == InitState.INITIALIZED) {
                 refreshStatus()
+                Log.e("LogS", "getSentianceData");
                 result.success(Sentiance.getInstance(context).sdkStatus.startStatus.name)
             } else {
-                result.success("NOT_INITIALIZED_getSentianceData")
+                Log.e("LogS", "getSentianceData fail");
+                result.success("NOT_INITIALIZED")
             }
         } else if (call.method == "stopSdk") {
+            Log.e("LogS", "stopSdk");
             SentianceWrapper(context).stopSentianceSdk()
             result.success(Sentiance.getInstance(context).sdkStatus.startStatus.name)
         } else if (call.method == "startSdk") {
+            Log.e("LogS", "startSdk");
             if (Sentiance.getInstance(context).initState == InitState.INITIALIZED) {
                 SentianceWrapper(context).startSentianceSdk()
                 result.success(Sentiance.getInstance(context).sdkStatus.startStatus.name)
             }
         } else if (call.method == "statusSdk") {
+            Log.e("LogS", "statusSdk");
             if (Sentiance.getInstance(context).initState == InitState.INITIALIZED) {
+                Log.e("LogS", "stopSdkss");
                 var data = Sentiance.getInstance(context).sdkStatus;
                 result.success(data);
             } else {
-                result.success("NOT_INITIALIZED_statusSdk");
+                Log.e("LogS", "stopSdk FAIL");
+                result.success("NOT_INITIALIZED");
             }
 
         }
         else if(call.method == "getMobileHealthData")
         {
+            Log.e("LogS", "getMobileHealthData ");
           if (Sentiance.getInstance(context).initState == InitState.INITIALIZED) {
 
            val cache = Cache(activity)
            var data = cache.getMobileHealthData();
-           
+           Log.e("LogS", "getMobileHealthData ssss");
             result.success(data);
           } else {
-              result.success("NOT_INITIALIZED_getMobileHealthData")
+            Log.e("LogS", "getMobileHealthData FAIL");
+              result.success("NOT_INITIALIZED")
           }
         }
         else {
+            Log.e("LogS", "nott impli ");
             result.notImplemented()
         }
 
@@ -140,7 +150,7 @@ class SentianceFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             getToken()
             updateDataToApi();
         } else {
-            Log.e("TAG", "refreshStatus: NOT_INITIALIZED_refreshStatus ")
+            Log.e("TAG", "refreshStatus: NOT_INITIALIZED")
         }
     }
 
