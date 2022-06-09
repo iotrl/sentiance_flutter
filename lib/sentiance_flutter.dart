@@ -9,6 +9,12 @@ export 'package:sentiance_flutter/models/mobile_health_data.dart';
 class SentianceFlutter {
   static Map getCredentails(token, sentianceSecret, appId, userLinkUrl,
       crashDetectionUrl, mobileHealthUrl, customerId, userId) {
+    print("llllllllllllll " +
+        userId +
+        " " +
+        customerId +
+        " " +
+        crashDetectionUrl);
     return {
       "data": {
         "token": token,
