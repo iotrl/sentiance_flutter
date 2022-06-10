@@ -240,7 +240,7 @@ public class SentianceWrapper
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 Log.w(TAG, response.body().string());
-                Log.e("CrashDetectionRes", response.body().string());
+                
                 Log.e("CrashDetectionRes", "Success");
             }
 
