@@ -215,21 +215,20 @@ public class SentianceWrapper
                 + "\",\"location\":{\"lat\":\"" + lat + "\",\"lng\":\"" + lon + "\"},\"time\":\"" + time + "\"}";
         Log.e("Crash Detection Json", jsonBody);
 
-        /*
-         * Request request1 = new Request.Builder()
-         * .url(mCache.getCrashDetectionUrl())
-         * .header("Authorization", getAuthHeader())
-         * .put(RequestBody.create(MediaType.parse("application/json"), jsonBody))
-         * .build();
-         */
-
-        Log.e("Crash Detection data pri -",  mCache.getCrashDetectionUrl());
-
         Request request1 = new Request.Builder()
                 .url(mCache.getCrashDetectionUrl())
+                .header("Authorization", getAuthHeader())
                 .post(RequestBody.create(MediaType.parse("application/json"), jsonBody))
-                .addHeader("Authorization", getAuthHeader()) // Notice this request has header if you don't need to send                                           // a header just erase this part
                 .build();
+
+        Log.e("Crash Detection data pri -", mCache.getCrashDetectionUrl());
+
+        // Request request1 = new Request.Builder()
+        // .url(mCache.getCrashDetectionUrl())
+        // .post(RequestBody.create(MediaType.parse("application/json"), jsonBody))
+        // .addHeader("Authorization", getAuthHeader()) // Notice this request has
+        // header if you don't need to send // a header just erase this part
+        // .build();
         client.newCall(request1).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
