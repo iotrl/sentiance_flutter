@@ -125,7 +125,7 @@ class SentianceFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
         } else if(call.method == "dummycrash")
         {
-            SentianceWrapper(context).createDummyCrash;
+            SentianceWrapper(context).createDummyCrash();
             result.success("dummycrash");
 
         }
