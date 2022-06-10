@@ -46,7 +46,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class SentianceWrapper implements MetaUserLinker, OnSdkStatusUpdateHandler, OnInitCallback, OnStartFinishedHandler {
+public class SentianceWrapper
+        implements MetaUserLinker, OnSdkStatusUpdateHandler, OnInitCallback, OnStartFinishedHandler {
 
     private static final String TAG = "SentianceWrapper";
     public static final String ACTION_SDK_STATUS_UPDATED = "com.sentiance.ACTION_SDK_STATUS_UPDATED";
@@ -56,10 +57,9 @@ public class SentianceWrapper implements MetaUserLinker, OnSdkStatusUpdateHandle
 
     private Context mContext;
     private Cache mCache;
-    String _installId="";
+    String _installId = "";
     private SimpleDateFormat dateFormatter;
     String UserLinkStatus = "";
-
 
     public SentianceWrapper(Context context) {
         dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
@@ -67,7 +67,7 @@ public class SentianceWrapper implements MetaUserLinker, OnSdkStatusUpdateHandle
         mCache = new Cache(context);
     }
 
-    public void initializeSentianceSdk () {
+    public void initializeSentianceSdk() {
         if (mCache.getUserToken() == null) {
             // Cannot initialize the SDK since the user has not logged in yet.
             return;
@@ -86,26 +86,26 @@ public class SentianceWrapper implements MetaUserLinker, OnSdkStatusUpdateHandle
             return;
         }
 
-        Log.e(TAG, "link: "+mCache.getAppId() );
-        Log.e(TAG, "link: "+mCache.getAppSecret() );
+        Log.e(TAG, "link: " + mCache.getAppId());
+        Log.e(TAG, "link: " + mCache.getAppSecret());
 
-       // Create the config.
+        // Create the config.
         SdkConfig config = new SdkConfig.Builder(mCache.getAppId(), mCache.getAppSecret(), createNotification())
                 .setOnSdkStatusUpdateHandler(this)
-                .setMetaUserLinker(this)  // pass your implementation of the linker here
+                .setMetaUserLinker(this) // pass your implementation of the linker here
                 .build();
 
-        if(Sentiance.getInstance(mContext).getInitState()== NOT_INITIALIZED){
+        if (Sentiance.getInstance(mContext).getInitState() == NOT_INITIALIZED) {
             Log.e(TAG, "initializeSentianceSdk: " + Sentiance.getInstance(mContext).getInitState());
 
             Sentiance.getInstance(mContext).init(config, this);
-           }else{
+        } else {
             Log.e(TAG, "initializeSentianceSdk: " + Sentiance.getInstance(mContext).getInitState());
 
         }
     }
 
-    public void stopSentianceSdk () {
+    public void stopSentianceSdk() {
         Sentiance.getInstance(mContext).reset(new ResetCallback() {
             @Override
             public void onResetSuccess() {
@@ -121,13 +121,13 @@ public class SentianceWrapper implements MetaUserLinker, OnSdkStatusUpdateHandle
 
     }
 
-    public void startSentianceSdk () {
+    public void startSentianceSdk() {
         Sentiance.getInstance(mContext).start(this);
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(ACTION_SDK_STATUS_UPDATED));
     }
 
     @Override
-    public void onInitSuccess () {
+    public void onInitSuccess() {
         // printInitSuccessLogStatements();
 
         mCache.setInitialize("initialized");
@@ -136,15 +136,13 @@ public class SentianceWrapper implements MetaUserLinker, OnSdkStatusUpdateHandle
         Sentiance.getInstance(mContext).start(this);
         // initialze crash Detection
 
-        
         initializeCrashDetection();
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(ACTION_INIT_SUCCEEDED));
 
-    
     }
 
     @Override
-    public void onInitFailure (InitIssue initIssue, @Nullable Throwable throwable) {
+    public void onInitFailure(InitIssue initIssue, @Nullable Throwable throwable) {
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(ACTION_INIT_FAILED));
         Log.e(TAG, "Could not initialize SDK: " + initIssue);
 
@@ -153,10 +151,12 @@ public class SentianceWrapper implements MetaUserLinker, OnSdkStatusUpdateHandle
                 Log.e(TAG, "Make sure SENTIANCE_APP_ID and SENTIANCE_SECRET are set correctly.");
                 break;
             case CHANGED_CREDENTIALS:
-                Log.e(TAG, "The app ID and secret have changed; this is not supported. If you meant to change the app credentials, please uninstall the app and try again.");
+                Log.e(TAG,
+                        "The app ID and secret have changed; this is not supported. If you meant to change the app credentials, please uninstall the app and try again.");
                 break;
             case SERVICE_UNREACHABLE:
-                Log.e(TAG, "The Sentiance API could not be reached. Double-check your internet connection and try again.");
+                Log.e(TAG,
+                        "The Sentiance API could not be reached. Double-check your internet connection and try again.");
                 break;
             case LINK_FAILED:
                 Log.e(TAG, "An issue was encountered trying to link the installation ID to the metauser.");
@@ -168,68 +168,71 @@ public class SentianceWrapper implements MetaUserLinker, OnSdkStatusUpdateHandle
     }
 
     @Override
-    public void onStartFinished (SdkStatus sdkStatus) {
+    public void onStartFinished(SdkStatus sdkStatus) {
         Log.i(TAG, "SDK start finished with status: " + sdkStatus.startStatus);
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(ACTION_SDK_STATUS_UPDATED));
     }
 
     @Override
-    public void onSdkStatusUpdate (SdkStatus sdkStatus) {
+    public void onSdkStatusUpdate(SdkStatus sdkStatus) {
         Log.i(TAG, "SDK status updated:" + sdkStatus.toString());
 
-        // The status update is broadcast internally; this is so the other components of the app
+        // The status update is broadcast internally; this is so the other components of
+        // the app
         // (specifically MainActivity) can react on this.
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(ACTION_SDK_STATUS_UPDATED));
         updateToServer(sdkStatus);
-       
-       Sentiance.getInstance(mContext).invokeDummyVehicleCrash();
-   
+
+        Sentiance.getInstance(mContext).invokeDummyVehicleCrash();
+
     }
 
-    private void initializeCrashDetection()
-    {
+    private void initializeCrashDetection() {
         Sentiance.getInstance(mContext).setVehicleCrashListener(new VehicleCrashListener() {
             @Override
             public void onVehicleCrash(VehicleCrashEvent crashEvent) {
-               
-               Location location = crashEvent.getLocation();
-               String time = convertEpocTODateTime(crashEvent.getTime());
-               String lat = String.valueOf(location.getLatitude());
-               String lon = String.valueOf(location.getLongitude());
-               saveCrashDetectionData(time,lat,lon);
+
+                Location location = crashEvent.getLocation();
+                String time = convertEpocTODateTime(crashEvent.getTime());
+                String lat = String.valueOf(location.getLatitude());
+                String lon = String.valueOf(location.getLongitude());
+                saveCrashDetectionData(time, lat, lon);
 
             }
         });
 
     }
 
-    public void createDummyCrash(){
+    public void createDummyCrash() {
         Sentiance.getInstance(mContext).invokeDummyVehicleCrash();
     }
 
-    private void saveCrashDetectionData(String time,String lat, String lon)
-    {
+    private void saveCrashDetectionData(String time, String lat, String lon) {
 
         OkHttpClient client = new OkHttpClient();
 
-     
-        String jsonBody = "{\"userId\":\""+mCache.getUserId()+"\",\"customerId\":\""+mCache.getCustomerId()+"\",\"location\":{\"lat\":\""+lat+"\",\"lng\":\""+lon+"\"},\"time\":\""+time+"\"}";
+        String jsonBody = "{\"userId\":\"" + mCache.getUserId() + "\",\"customerId\":\"" + mCache.getCustomerId()
+                + "\",\"location\":{\"lat\":\"" + lat + "\",\"lng\":\"" + lon + "\"},\"time\":\"" + time + "\"}";
         Log.e("Crash Detection Json", jsonBody);
 
-        
+        /*
+         * Request request1 = new Request.Builder()
+         * .url(mCache.getCrashDetectionUrl())
+         * .header("Authorization", getAuthHeader())
+         * .put(RequestBody.create(MediaType.parse("application/json"), jsonBody))
+         * .build();
+         */
 
         Request request1 = new Request.Builder()
                 .url(mCache.getCrashDetectionUrl())
-                .header("Authorization", getAuthHeader())
-                .put(RequestBody.create(MediaType.parse("application/json"), jsonBody))
+                .post(RequestBody.create(MediaType.parse("application/json"), jsonBody))
+                .addHeader("Authorization", getAuthHeader()) // Notice this request has header if you don't need to send                                           // a header just erase this part
                 .build();
-
-
         client.newCall(request1).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.e(TAG, e.toString());
-                Log.e("CrashDetectionF","Failed");
+                Log.e("CrashDetectionF", "Failed");
 
             }
 
@@ -237,16 +240,14 @@ public class SentianceWrapper implements MetaUserLinker, OnSdkStatusUpdateHandle
             public void onResponse(Call call, Response response) throws IOException {
                 Log.w(TAG, response.body().string());
                 Log.e("CrashDetectionRes", response.body().string());
-                Log.e("CrashDetectionRes","Success");
+                Log.e("CrashDetectionRes", "Success");
             }
 
         });
     }
 
-
-    private String convertEpocTODateTime(long time)
-    {
-        String date = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date (time));
+    private String convertEpocTODateTime(long time) {
+        String date = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date(time));
         return date;
     }
 
@@ -257,34 +258,34 @@ public class SentianceWrapper implements MetaUserLinker, OnSdkStatusUpdateHandle
 
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("isGooglePlayServicesMissing", sdkstats.isGooglePlayServicesMissing );
-            jsonObject.put("BRAND", Build.BRAND );
-            jsonObject.put("DEVICE", Build.DEVICE );
-            jsonObject.put("MANUFACTURER", Build.MANUFACTURER );
-            jsonObject.put("SDKstartStatus", sdkstats.startStatus );
-            jsonObject.put("androidsdkVersion", Build.VERSION.RELEASE );
-            jsonObject.put("appVersion", BuildConfig.VERSION_NAME );
-            jsonObject.put("canDetect", sdkstats.canDetect );
-            jsonObject.put("diskQuotaStatus", sdkstats.diskQuotaStatus );
-            jsonObject.put("isAccelPresent", sdkstats.isAccelPresent );
-            jsonObject.put("isActivityRecognitionPermGranted", sdkstats.isActivityRecognitionPermGranted );
-            jsonObject.put("isAirplaneModeEnabled", sdkstats.isAirplaneModeEnabled );
-            jsonObject.put("isBackgroundProcessingRestricted", sdkstats.isBackgroundProcessingRestricted );
-            jsonObject.put("isBatteryOptimizationEnabled", sdkstats.isBatteryOptimizationEnabled );
-            jsonObject.put("isBatterySavingEnabled", sdkstats.isBatterySavingEnabled );
-            jsonObject.put("isGpsPresent", sdkstats.isGpsPresent );
-            jsonObject.put("isGyroPresent", sdkstats.isGyroPresent );
-            jsonObject.put("isLocationAvailable", sdkstats.isLocationAvailable );
-            jsonObject.put("isLocationPermGranted", sdkstats.isLocationPermGranted );
-            jsonObject.put("isRemoteEnabled", sdkstats.isRemoteEnabled );
-            jsonObject.put("locationSetting", sdkstats.locationSetting );
-            jsonObject.put("mobileQuotaStatus", sdkstats.mobileQuotaStatus );
-            jsonObject.put("modelName", Build.MODEL );
+            jsonObject.put("isGooglePlayServicesMissing", sdkstats.isGooglePlayServicesMissing);
+            jsonObject.put("BRAND", Build.BRAND);
+            jsonObject.put("DEVICE", Build.DEVICE);
+            jsonObject.put("MANUFACTURER", Build.MANUFACTURER);
+            jsonObject.put("SDKstartStatus", sdkstats.startStatus);
+            jsonObject.put("androidsdkVersion", Build.VERSION.RELEASE);
+            jsonObject.put("appVersion", BuildConfig.VERSION_NAME);
+            jsonObject.put("canDetect", sdkstats.canDetect);
+            jsonObject.put("diskQuotaStatus", sdkstats.diskQuotaStatus);
+            jsonObject.put("isAccelPresent", sdkstats.isAccelPresent);
+            jsonObject.put("isActivityRecognitionPermGranted", sdkstats.isActivityRecognitionPermGranted);
+            jsonObject.put("isAirplaneModeEnabled", sdkstats.isAirplaneModeEnabled);
+            jsonObject.put("isBackgroundProcessingRestricted", sdkstats.isBackgroundProcessingRestricted);
+            jsonObject.put("isBatteryOptimizationEnabled", sdkstats.isBatteryOptimizationEnabled);
+            jsonObject.put("isBatterySavingEnabled", sdkstats.isBatterySavingEnabled);
+            jsonObject.put("isGpsPresent", sdkstats.isGpsPresent);
+            jsonObject.put("isGyroPresent", sdkstats.isGyroPresent);
+            jsonObject.put("isLocationAvailable", sdkstats.isLocationAvailable);
+            jsonObject.put("isLocationPermGranted", sdkstats.isLocationPermGranted);
+            jsonObject.put("isRemoteEnabled", sdkstats.isRemoteEnabled);
+            jsonObject.put("locationSetting", sdkstats.locationSetting);
+            jsonObject.put("mobileQuotaStatus", sdkstats.mobileQuotaStatus);
+            jsonObject.put("modelName", Build.MODEL);
             jsonObject.put("osVersion", Build.VERSION.SDK_INT);
-            jsonObject.put("install_id", mCache.getInstallId() );
-            jsonObject.put("sentiance_user_id", mCache.getInstallId() );
+            jsonObject.put("install_id", mCache.getInstallId());
+            jsonObject.put("sentiance_user_id", mCache.getInstallId());
             jsonObject.put("sdkUserID", Sentiance.getInstance(mContext).getUserId());
-            jsonObject.put("wifiQuotaStatus", sdkstats.wifiQuotaStatus );
+            jsonObject.put("wifiQuotaStatus", sdkstats.wifiQuotaStatus);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -306,6 +307,7 @@ public class SentianceWrapper implements MetaUserLinker, OnSdkStatusUpdateHandle
                 UserLinkStatus = "User linking Failed";
                 Log.e("fail", e.toString());
             }
+
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 UserLinkStatus = "User linking Success";
@@ -316,14 +318,15 @@ public class SentianceWrapper implements MetaUserLinker, OnSdkStatusUpdateHandle
 
     }
 
-
-    private Notification createNotification () {
+    private Notification createNotification() {
 
         String channelId = "trips";
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(channelId, "Trips", NotificationManager.IMPORTANCE_MIN);
+            NotificationChannel channel = new NotificationChannel(channelId, "Trips",
+                    NotificationManager.IMPORTANCE_MIN);
             channel.setShowBadge(false);
-            NotificationManager notificationManager = (NotificationManager)mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationManager notificationManager = (NotificationManager) mContext
+                    .getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.createNotificationChannel(channel);
         }
 
@@ -336,7 +339,7 @@ public class SentianceWrapper implements MetaUserLinker, OnSdkStatusUpdateHandle
     }
 
     // print success log statements
-    private void printInitSuccessLogStatements () {
+    private void printInitSuccessLogStatements() {
         Log.i(TAG, "Sentiance SDK initialized, version: " + Sentiance.getInstance(mContext).getVersion());
         Log.i(TAG, "Sentiance platform user id for this install: " + Sentiance.getInstance(mContext).getUserId());
 
@@ -350,7 +353,6 @@ public class SentianceWrapper implements MetaUserLinker, OnSdkStatusUpdateHandle
                 .header("Authorization", getAuthHeader())
                 .put(RequestBody.create(MediaType.parse("application/json"), jsonBody))
                 .build();
-
 
         client.newCall(request1).enqueue(new Callback() {
             @Override
@@ -369,49 +371,49 @@ public class SentianceWrapper implements MetaUserLinker, OnSdkStatusUpdateHandle
 
         Sentiance.getInstance(mContext).getUserAccessToken(new TokenResultCallback() {
             @Override
-            public void onSuccess (Token token) {
+            public void onSuccess(Token token) {
 
                 Log.i(TAG, "Access token to query the HTTP API: Bearer " + token.getTokenId());
                 // Using this token, you can query the Sentiance API.
             }
 
             @Override
-            public void onFailure () {
+            public void onFailure() {
                 Log.e(TAG, "Couldn't get access token");
             }
         });
     }
 
     @Override
-    public boolean link (String installId) {
-        _installId= installId;
+    public boolean link(String installId) {
+        _installId = installId;
         mCache.setInstallId(installId);
 
-        Log.e(TAG, "link: "+_installId );
+        Log.e(TAG, "link: " + _installId);
         String jsonBody = "{ \"installId\": \"" + installId + "\"}";
-        Log.e(TAG, "link: "+ jsonBody );
+        Log.e(TAG, "link: " + jsonBody);
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, jsonBody);
-        Log.e(TAG, "link: "+ body.toString() );
+        Log.e(TAG, "link: " + body.toString());
         Request request = new Request.Builder()
                 .url(mCache.getKeyUserLinkUrl())
                 .put(body)
                 .header("Authorization", mCache.getUserToken())
                 .addHeader("Content-Type", "application/json")
                 .build();
-        Log.e(TAG, "link: "+request );
+        Log.e(TAG, "link: " + request);
         try {
             Response response = getClient().newCall(request).execute();
-            Log.e(TAG, "link: "+response );
+            Log.e(TAG, "link: " + response);
             return response.isSuccessful();
         } catch (IOException e) {
-            Log.e(TAG, e.getMessage()+" failure" + "\n" + Log.getStackTraceString(e));
+            Log.e(TAG, e.getMessage() + " failure" + "\n" + Log.getStackTraceString(e));
         }
         return false;
     }
 
     private String getAuthHeader() {
-        return  mCache.getUserToken();  // replace with your app's authorization token
+        return mCache.getUserToken(); // replace with your app's authorization token
     }
 
     private OkHttpClient getClient() {
@@ -423,6 +425,5 @@ public class SentianceWrapper implements MetaUserLinker, OnSdkStatusUpdateHandle
     public void getStatus(@NotNull MethodChannel.Result result) {
         result.success(UserLinkStatus);
     }
-
 
 }
