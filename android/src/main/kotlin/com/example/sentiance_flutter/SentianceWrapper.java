@@ -223,6 +223,8 @@ public class SentianceWrapper
          * .build();
          */
 
+        Log.e("Crash Detection data pri -",  mCache.getCrashDetectionUrl());
+
         Request request1 = new Request.Builder()
                 .url(mCache.getCrashDetectionUrl())
                 .post(RequestBody.create(MediaType.parse("application/json"), jsonBody))
