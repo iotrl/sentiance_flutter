@@ -49,12 +49,6 @@ class SentianceFlutter {
       mobileHealthUrl,
       customerId,
       userId}) async {
-    // print("llllllllllllll " +
-    //     userId +
-    //     " " +
-    //     customerId +
-    //     " " +
-    //     crashDetectionUrl);
     var credentials = getCredentails(token, sentianceSecret, appId, userLinkUrl,
         crashDetectionUrl, mobileHealthUrl, customerId, userId);
     var initSentiance =
@@ -86,6 +80,7 @@ class SentianceFlutter {
     return sentianceStatus;
   }
 
+// init dummyCrash
   static Future<dynamic> get dummycrash async {
     var dummycrashdata = await _channel.invokeMethod('dummycrash');
     return dummycrashdata;

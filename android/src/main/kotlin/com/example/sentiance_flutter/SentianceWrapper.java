@@ -136,7 +136,7 @@ public class SentianceWrapper
         Sentiance.getInstance(mContext).start(this);
         // initialze crash Detection
 
-        initializeCrashDetection();
+      
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(ACTION_INIT_SUCCEEDED));
 
     }
@@ -183,7 +183,7 @@ public class SentianceWrapper
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(ACTION_SDK_STATUS_UPDATED));
         updateToServer(sdkStatus);
 
-        Sentiance.getInstance(mContext).invokeDummyVehicleCrash();
+      
 
     }
 
@@ -223,12 +223,7 @@ public class SentianceWrapper
 
         Log.e("Crash Detection data pri -", mCache.getCrashDetectionUrl());
 
-        // Request request1 = new Request.Builder()
-        // .url(mCache.getCrashDetectionUrl())
-        // .post(RequestBody.create(MediaType.parse("application/json"), jsonBody))
-        // .addHeader("Authorization", getAuthHeader()) // Notice this request has
-        // header if you don't need to send // a header just erase this part
-        // .build();
+       
         client.newCall(request1).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
