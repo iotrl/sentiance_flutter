@@ -143,6 +143,16 @@ class SentianceFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
               result.success("NOT_INITIALIZED")
           }
         }
+        else if(call.method == "getMobileHealthData"){
+            try {
+                Sentiance.getInstance(context).disableBatteryOptimization();
+            result.success("true");
+            }
+            catch(Exception e) {
+                result.success("false");
+            }
+            
+        }
         else {
             
             result.notImplemented()

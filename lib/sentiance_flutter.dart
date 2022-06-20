@@ -86,6 +86,11 @@ class SentianceFlutter {
     return dummycrashdata;
   }
 
+ static Future<dynamic> get disableBatteryOptimization async {
+    var disableBatteryOptimization = await _channel.invokeMethod('disableBatteryOptimization');
+    return disableBatteryOptimization;
+  }  
+
   static Future<dynamic> get getSentianceInitial async {
     var sentianceStatus = await _channel1.invokeMethod('sentiance_initial');
     return sentianceStatus;
