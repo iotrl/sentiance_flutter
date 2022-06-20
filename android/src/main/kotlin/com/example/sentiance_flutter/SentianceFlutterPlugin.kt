@@ -144,13 +144,11 @@ class SentianceFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
           }
         }
         else if(call.method == "disableBatteryOptimization"){
-            try {
-                Sentiance.getInstance(context).disableBatteryOptimization();
+        
+           Sentiance.getInstance(context).disableBatteryOptimization();
             result.success("true");
-            }
-            catch(Exception e) {
-                result.success("false");
-            }
+           
+    
             
         }
         else {
