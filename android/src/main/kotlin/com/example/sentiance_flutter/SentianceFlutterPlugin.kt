@@ -147,8 +147,6 @@ class SentianceFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         
            Sentiance.getInstance(context).disableBatteryOptimization();
             result.success("true");
-           
-    
             
         }
         else {
