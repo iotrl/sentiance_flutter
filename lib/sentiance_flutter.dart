@@ -87,14 +87,14 @@ class SentianceFlutter {
   }
 
   static Future<dynamic> get sdkStartStutus async {
-    var sdkStartStutus = await _channel.invokeMethod('sdkStartStutus');
-    return sdkStartStutus;
+    var sdkStartStutus1 = await _channel.invokeMethod('sdkStartStutus');
+    return sdkStartStutus1;
   }
 
   static Future<dynamic> get disableBatteryOptimization async {
-    var disableBatteryOptimization =
+    var disableBatteryOptimization1 =
         await _channel.invokeMethod('disableBatteryOptimization');
-    return disableBatteryOptimization;
+    return disableBatteryOptimization1;
   }
 
   static Future<dynamic> get getSentianceInitial async {
