@@ -149,6 +149,11 @@ class SentianceFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             result.success("true");
             
         }
+        else if(call.method == "sdkStartStutus"){
+        
+            result.success(Sentiance.getInstance(context).sdkStatus.startStatus.name)
+             
+         }
         else {
             
             result.notImplemented()
