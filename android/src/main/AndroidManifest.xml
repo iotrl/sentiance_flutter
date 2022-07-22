@@ -34,6 +34,7 @@
             android:launchMode="singleTop"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
+            android:exported="false"
             android:windowSoftInputMode="adjustResize"
             tools:ignore="IntentFilterExportedReceiver">
             <!-- Specifies an Android theme to apply to this Activity as soon as
@@ -59,7 +60,8 @@
 
 
         <receiver android:name="rekab.app.background_locator.BootBroadcastReceiver"
-            android:enabled="true">
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
@@ -87,7 +89,8 @@
                 android:resource="@xml/filepath"
                 tools:replace="android:resource" />
         </provider>
-        <receiver android:name="com.example.sentiance_flutter.MyAlarmReceiver">
+        <receiver android:name="com.example.sentiance_flutter.MyAlarmReceiver"
+         android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <action android:name="android.intent.action.QUICKBOOT_POWERON"/>

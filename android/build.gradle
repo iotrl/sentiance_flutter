@@ -47,7 +47,7 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 21
     }
 }
 
@@ -59,7 +59,8 @@ dependencies {
     implementation ('com.sentiance:sdk:4.22.1@aar') { transitive = true }
     implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
     implementation 'com.android.volley:volley:1.2.0'
-    implementation files('autoStart/autostart.jar')
+   // implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'me.weishu:free_reflection:2.2.0'
 
 
 }

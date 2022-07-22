@@ -33,11 +33,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import io.flutter.plugin.common.MethodChannel;
+
+
+import me.weishu.reflection.Reflection;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -45,7 +52,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import xyz.kumaraswamy.autostart.Autostart;
+
 
 public class SentianceWrapper
         implements MetaUserLinker, OnSdkStatusUpdateHandler, OnInitCallback, OnStartFinishedHandler {
@@ -437,6 +444,188 @@ public class SentianceWrapper
         return false;
 
 
+
+
+
+
     }
 
+}
+
+
+
+
+//package xyz.kumaraswamy.autostart;
+//
+//        import android.content.Context;
+//        import android.os.Build;
+//        import android.util.Log;
+//        import me.weishu.reflection.Reflection;
+//        import org.jetbrains.annotations.Nullable;
+//
+//        import java.lang.reflect.Field;
+//        import java.lang.reflect.Method;
+//        import java.util.ArrayList;
+
+@SuppressWarnings("unused")
+class Autostart {
+
+    private static final String TAG = "Autostart";
+
+    private static final String XIAOMI_NAME = "xiaomi";
+
+    private static final String MIUI_CLAZZ = "android.miui.AppOpsUtils";
+    private static final String POLICY_CLAZZ = "miui.content.pm.PreloadedAppPolicy";
+
+    private static boolean isReflectionEnabled = false;
+
+    private static final int STATE_ENABLED = 0;
+    private static final int STATE_DISABLED = 1;
+
+    private final Context context;
+
+    /**
+     * State for the autostart
+     * ENABLED and DISABLED are the expected results for a MIUI device
+     */
+
+    public enum State {
+        ENABLED, DISABLED, NO_INFO, UNEXPECTED_RESULT
+    }
+
+    public static boolean isXiaomi() {
+        return Build.MANUFACTURER.equalsIgnoreCase(XIAOMI_NAME);
+    }
+
+    /**
+     * Create an instance of Autostart, the phone must be Xiaomi device
+     *
+     * @param context Application context
+     * @throws Exception phone is not Xiaomi device!
+     */
+
+    public Autostart(Context context) throws Exception {
+        if (!isXiaomi()) {
+            throw new Exception("Not a Xiaomi device");
+        }
+        this.context = context;
+
+        if (!isReflectionEnabled) {
+            Reflection.unseal(context);
+            isReflectionEnabled = true;
+        }
+    }
+
+    /**
+     * Checks if autostart is enabled.
+     * May also return false (even if its enabled)
+     */
+
+    public boolean isAutoStartEnabled() throws Exception {
+        return getAutoStartState() == State.ENABLED;
+    }
+
+    /**
+     * Returns the state of the autostart
+     *
+     * <p>
+     * ENABLED / DISABLED = autostart state
+     * NOINFO = something went wrong when attempting to get the state
+     * UNEXPECTED_RESULT = we got the state, but it is not right
+     * </p>
+     */
+
+    public State getAutoStartState() throws Exception {
+        final Class<?> clazz = getClazz(MIUI_CLAZZ);
+
+        if (clazz == null) {
+            return State.NO_INFO;
+        }
+
+        final Method method = findMethod(clazz);
+
+        if (method == null) {
+            // the method does not exist!
+            return State.NO_INFO;
+        }
+
+        final Object result = method.invoke(null,
+                context, context.getPackageName());
+
+        // it must be an integer, else things are changed
+
+        if (!(result instanceof Integer)) {
+            return State.UNEXPECTED_RESULT;
+        }
+        final int _int = (int) result;
+        if (_int == STATE_ENABLED) {
+            return State.ENABLED;
+        } else if (_int == STATE_DISABLED) {
+            return State.DISABLED;
+        }
+        return State.UNEXPECTED_RESULT;
+    }
+
+    @SuppressWarnings("SuspiciousToArrayCall")
+    public String[] defaultWhiteListedPackages() throws NoSuchFieldException, IllegalAccessException {
+        final Class<?> clazz = getClazz(POLICY_CLAZZ);
+        if (clazz == null) {
+            // just return an empty array
+            return new String[0];
+        }
+        final Field field = clazz.getDeclaredField("sProtectedDataApps");
+        field.setAccessible(true);
+
+        // we pass null to `Field.get()` because the field
+        // is statically defined
+        final Object result = field.get(null);
+        if (result instanceof ArrayList<?>) {
+            return ((ArrayList<?>) result).toArray(new String[0]);
+        }
+        final String message = "defaultWhiteListedPackages() unexpected result type";
+        if (result == null) {
+            return new String[0];
+        }
+        Log.e(TAG, message + " " + result.getClass());
+        return new String[0];
+    }
+
+    private Class<?> getClazz(String name) {
+        try {
+            return Class.forName(name);
+        } catch (ClassNotFoundException ignored) {
+            // we couldn't find the class name
+            // we are out of luck
+            return null;
+        }
+    }
+
+    /**
+     * Finds the method of the MIUI clazz
+     *
+     * @return returns the method, is null
+     * if method is not found
+     */
+
+
+    private @Nullable Method findMethod(final Class<?> clazz) {
+        final String methodName = "getApplicationAutoStart";
+
+        try {
+            final Method method = clazz.getDeclaredMethod("getApplicationAutoStart",
+                    Context.class, String.class);
+
+            method.setAccessible(true);
+            return method;
+        } catch (NoSuchMethodException e) {
+            for (Method method : clazz.getDeclaredMethods()) {
+                if (method.getName().equals(methodName)) {
+                    Log.i(TAG, "Found a new method matching method name");
+                }
+            }
+            // we could not find the method name
+            // we were near to get the autostart
+            return null;
+        }
+    }
 }
