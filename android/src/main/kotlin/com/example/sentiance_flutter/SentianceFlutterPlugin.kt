@@ -111,6 +111,9 @@ class SentianceFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             if (Sentiance.getInstance(context).initState == InitState.INITIALIZED) {
                 SentianceWrapper(context).startSentianceSdk()
                 result.success(Sentiance.getInstance(context).sdkStatus.startStatus.name)
+            } else {
+              
+                result.success("NOT_INITIALIZED")
             }
         } else if (call.method == "statusSdk") {
          
@@ -145,15 +148,19 @@ class SentianceFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         }
         else if(call.method == "disableBatteryOptimization"){
         
-           Sentiance.getInstance(context).disableBatteryOptimization();
+         Sentiance.getInstance(context).disableBatteryOptimization();
             result.success("true");
             
         }
-        else if(call.method == "sdkStartStutus"){
+        else if(call.method == "sdkStartStatus"){
         
-            result.success(Sentiance.getInstance(context).sdkStatus.startStatus.name)
+            result.success(Sentiance.getInstance(context).sdkStatus.startStatus.name);
              
          }
+        else if(call.method == "checkAutoStart"){
+            result.success(SentianceWrapper(context).getAutoStartStatus());
+            
+        }
         else {
             
             result.notImplemented()

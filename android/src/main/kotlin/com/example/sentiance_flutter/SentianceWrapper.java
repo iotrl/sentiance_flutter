@@ -45,6 +45,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import xyz.kumaraswamy.autostart.Autostart;
 
 public class SentianceWrapper
         implements MetaUserLinker, OnSdkStatusUpdateHandler, OnInitCallback, OnStartFinishedHandler {
@@ -420,6 +421,22 @@ public class SentianceWrapper
 
     public void getStatus(@NotNull MethodChannel.Result result) {
         result.success(UserLinkStatus);
+    }
+
+    public boolean getAutoStartStatus () throws Exception {
+
+        if(!Autostart.isXiaomi()){
+            Autostart autostart = new Autostart(mContext);
+            Autostart.State state = autostart.getAutoStartState();
+
+            if (state == Autostart.State.ENABLED) {
+                // now we are also sure that autostart is enabled
+                return true;
+            }
+        }
+        return false;
+
+
     }
 
 }

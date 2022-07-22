@@ -87,7 +87,7 @@ class SentianceFlutter {
   }
 
   static Future<dynamic> get sdkStartStutus async {
-    var sdkStartStutus1 = await _channel.invokeMethod('sdkStartStutus');
+    var sdkStartStutus1 = await _channel.invokeMethod('sdkStartStatus');
     return sdkStartStutus1;
   }
 
@@ -98,7 +98,7 @@ class SentianceFlutter {
   }
 
   static Future<dynamic> get getSentianceInitial async {
-    var sentianceStatus = await _channel1.invokeMethod('sentiance_initial');
+    var sentianceStatus = await _channel.invokeMethod('sentiance_initial');
     return sentianceStatus;
   }
 
@@ -107,5 +107,10 @@ class SentianceFlutter {
     var sentianceMobileHealthData =
         await _channel.invokeMethod('getMobileHealthData');
     return MobileHealthData.fromJson(jsonDecode(sentianceMobileHealthData));
+  }
+
+  static Future<dynamic> get getAutoStartStatus async {
+      var status = await _channel.invokeMethod('getAutoStartStatus');
+    return status;
   }
 }
