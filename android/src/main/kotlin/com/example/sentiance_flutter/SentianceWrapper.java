@@ -432,7 +432,7 @@ public class SentianceWrapper
 
     public boolean getAutoStartStatus () throws Exception {
 
-        if(!Autostart.isXiaomi()){
+        if(Autostart.isXiaomi()){
             Autostart autostart = new Autostart(mContext);
             Autostart.State state = autostart.getAutoStartState();
 
