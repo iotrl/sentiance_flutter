@@ -259,8 +259,9 @@ public class SentianceWrapper
 
         OkHttpClient client = new OkHttpClient();
         SdkStatus sdkstats = sdkStatus;
+        
         Boolean isAutoStartAvl = Autostart.isXiaomi();
-        Boolean isAutoStartEnabled = getAutoStartStatus();
+        Boolean isAutoStartEnabled = SentianceWrapper.getAutoStartStatus();
 
         JSONObject jsonObject = new JSONObject();
         try {
