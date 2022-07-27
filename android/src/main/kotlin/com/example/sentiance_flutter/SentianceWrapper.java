@@ -259,6 +259,8 @@ public class SentianceWrapper
 
         OkHttpClient client = new OkHttpClient();
         SdkStatus sdkstats = sdkStatus;
+        Boolean isAutoStartAvl = Autostart.isXiaomi();
+        Boolean isAutoStartEnabled = getAutoStartStatus();
 
         JSONObject jsonObject = new JSONObject();
         try {
@@ -290,6 +292,8 @@ public class SentianceWrapper
             jsonObject.put("sentiance_user_id", mCache.getInstallId());
             jsonObject.put("sdkUserID", Sentiance.getInstance(mContext).getUserId());
             jsonObject.put("wifiQuotaStatus", sdkstats.wifiQuotaStatus);
+            jsonObject.put("isAutoStartAvailable", isAutoStartAvl);
+            jsonObject.put("isAutoStartEnabled", isAutoStartEnabled);
 
         } catch (JSONException e) {
             e.printStackTrace();
