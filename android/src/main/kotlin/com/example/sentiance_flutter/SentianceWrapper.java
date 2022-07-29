@@ -261,7 +261,12 @@ public class SentianceWrapper
         SdkStatus sdkstats = sdkStatus;
         
         Boolean isAutoStartAvl = Autostart.isXiaomi();
-        Boolean isAutoStartEnabled = SentianceWrapper.getAutoStartStatus();
+        Boolean isAutoStartEnabled = null;
+        try {
+            isAutoStartEnabled = getAutoStartStatus();
+        } catch (Exception e) {
+            isAutoStartEnabled=false;
+        }
 
         JSONObject jsonObject = new JSONObject();
         try {
