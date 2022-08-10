@@ -43,7 +43,6 @@ import java.util.concurrent.TimeUnit;
 
 import io.flutter.plugin.common.MethodChannel;
 
-
 import me.weishu.reflection.Reflection;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -52,7 +51,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
 
 public class SentianceWrapper
         implements MetaUserLinker, OnSdkStatusUpdateHandler, OnInitCallback, OnStartFinishedHandler {
@@ -144,7 +142,6 @@ public class SentianceWrapper
         Sentiance.getInstance(mContext).start(this);
         // initialze crash Detection
 
-      
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(ACTION_INIT_SUCCEEDED));
 
     }
@@ -191,8 +188,6 @@ public class SentianceWrapper
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(ACTION_SDK_STATUS_UPDATED));
         updateToServer(sdkStatus);
 
-      
-
     }
 
     private void initializeCrashDetection() {
@@ -231,7 +226,6 @@ public class SentianceWrapper
 
         Log.e("Crash Detection data pri -", mCache.getCrashDetectionUrl());
 
-       
         client.newCall(request1).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -243,7 +237,7 @@ public class SentianceWrapper
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 Log.w(TAG, response.body().string());
-                
+
                 Log.e("CrashDetectionRes", "Success");
             }
 
@@ -259,13 +253,13 @@ public class SentianceWrapper
 
         OkHttpClient client = new OkHttpClient();
         SdkStatus sdkstats = sdkStatus;
-        
+
         Boolean isAutoStartAvl = Autostart.isXiaomi();
         Boolean isAutoStartEnabled = false;
         try {
             isAutoStartEnabled = getAutoStartStatus();
         } catch (Exception e) {
-            isAutoStartEnabled=false;
+            isAutoStartEnabled = false;
         }
 
         JSONObject jsonObject = new JSONObject();
@@ -440,9 +434,9 @@ public class SentianceWrapper
         result.success(UserLinkStatus);
     }
 
-    public boolean getAutoStartStatus () throws Exception {
+    public boolean getAutoStartStatus() throws Exception {
 
-        if(Autostart.isXiaomi()){
+        if (Autostart.isXiaomi()) {
             Autostart autostart = new Autostart(mContext);
             Autostart.State state = autostart.getAutoStartState();
 
@@ -454,22 +448,25 @@ public class SentianceWrapper
         return false;
     }
 
+    public boolean getAutoStartAvl() throws Exception {
+        if (Autostart.isXiaomi()) {
+            return true;
+        }
+        return false;
+    }
 }
 
-
-
-
-//package xyz.kumaraswamy.autostart;
+// package xyz.kumaraswamy.autostart;
 //
-//        import android.content.Context;
-//        import android.os.Build;
-//        import android.util.Log;
-//        import me.weishu.reflection.Reflection;
-//        import org.jetbrains.annotations.Nullable;
+// import android.content.Context;
+// import android.os.Build;
+// import android.util.Log;
+// import me.weishu.reflection.Reflection;
+// import org.jetbrains.annotations.Nullable;
 //
-//        import java.lang.reflect.Field;
-//        import java.lang.reflect.Method;
-//        import java.util.ArrayList;
+// import java.lang.reflect.Field;
+// import java.lang.reflect.Method;
+// import java.util.ArrayList;
 
 @SuppressWarnings("unused")
 class Autostart {
@@ -608,9 +605,8 @@ class Autostart {
      * Finds the method of the MIUI clazz
      *
      * @return returns the method, is null
-     * if method is not found
+     *         if method is not found
      */
-
 
     private @Nullable Method findMethod(final Class<?> clazz) {
         final String methodName = "getApplicationAutoStart";

@@ -113,4 +113,9 @@ class SentianceFlutter {
       var status = await _channel.invokeMethod('getAutoStartStatus');
     return status;
   }
+
+  static Future<dynamic> get getAutoStartAvl async {
+      var status = await _channel.invokeMethod('getAutoStartAvl');
+    return status;
+  }
 }

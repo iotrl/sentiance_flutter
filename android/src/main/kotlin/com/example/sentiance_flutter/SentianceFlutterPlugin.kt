@@ -161,6 +161,10 @@ class SentianceFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             result.success(SentianceWrapper(context).getAutoStartStatus());
             
         }
+        else if(call.method == "getAutoStartAvl"){
+            result.success(SentianceWrapper(context).getAutoStartAvl());
+            
+        }
         else {
             
             result.notImplemented()
