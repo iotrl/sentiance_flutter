@@ -63,45 +63,53 @@ class Cache {
     @Nullable
     String getUserToken() {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(KEY_AUTH_TOKEN, null);
+       EncryptUtils en = new EncryptUtils();
+        return en.base64decode(sharedPreferences.getString(KEY_AUTH_TOKEN, null));
     }
 
     void setUserToken(String token) {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        sharedPreferences.edit().putString(KEY_AUTH_TOKEN, token).apply();
+        EncryptUtils en = new EncryptUtils();
+        sharedPreferences.edit().putString(KEY_AUTH_TOKEN,en.base64encode(token) ).apply();
     }
 
     @Nullable
     String getInstallId() {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(KEY_USER_INSTALL_ID, null);
+        EncryptUtils en = new EncryptUtils();
+        return en.base64decode(sharedPreferences.getString(KEY_USER_INSTALL_ID, null));
     }
 
     void setInstallId(String installId) {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        sharedPreferences.edit().putString(KEY_USER_INSTALL_ID, installId).apply();
+        EncryptUtils en = new EncryptUtils();
+        sharedPreferences.edit().putString(KEY_USER_INSTALL_ID,en.base64encode(installId)).apply();
     }
 
     @Nullable
     String getAppId() {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(KEY_APP_ID, null);
+          EncryptUtils en = new EncryptUtils();
+        return en.base64decode(sharedPreferences.getString(KEY_APP_ID, null));
     }
 
     void setKeyAppId(String appId) {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        sharedPreferences.edit().putString(KEY_APP_ID, appId).apply();
+       EncryptUtils en = new EncryptUtils();
+        sharedPreferences.edit().putString(KEY_APP_ID, en.base64encode(appId) ).apply();
     }
 
     @Nullable
     String getAppSecret() {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(KEY_APP_SECRET, null);
+        EncryptUtils en = new EncryptUtils();
+        return  en.base64decode(sharedPreferences.getString(KEY_APP_SECRET, null));
     }
 
     void setAppSecret(String secret) {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        sharedPreferences.edit().putString(KEY_APP_SECRET, secret).apply();
+        EncryptUtils en = new EncryptUtils();
+        sharedPreferences.edit().putString(KEY_APP_SECRET, en.base64encode(secret)).apply();
     }
 
     @Nullable
@@ -130,22 +138,48 @@ class Cache {
     void setCustomerId(String customerId)
     {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        sharedPreferences.edit().putString(KEY_CUSTOMER_ID, customerId).apply(); 
+        EncryptUtils en = new EncryptUtils();
+        sharedPreferences.edit().putString(KEY_CUSTOMER_ID, en.base64encode(customerId)).apply(); 
     }
     String getCustomerId()
     {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(KEY_CUSTOMER_ID, null);
+        EncryptUtils en = new EncryptUtils();
+        return en.base64decode(sharedPreferences.getString(KEY_CUSTOMER_ID, null));
     }
     void setUserId(String user_id)
     {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        sharedPreferences.edit().putString(KEY_USER_ID, user_id).apply(); 
+         EncryptUtils en = new EncryptUtils();
+        sharedPreferences.edit().putString(KEY_USER_ID,en.base64encode(user_id)).apply(); 
     }
     String getUserId()
     {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(KEY_USER_ID, null);
+        EncryptUtils en = new EncryptUtils();
+        return en.base64decode(sharedPreferences.getString(KEY_USER_ID, null));
     }
 }
 
+public class EncryptUtils {
+    public static final String DEFAULT_ENCODING = "UTF-8"; 
+    static BASE64Encoder enc = new BASE64Encoder();
+    static BASE64Decoder dec = new BASE64Decoder();
+
+    public static String base64encode(String text) {
+        try {
+            return enc.encode(text.getBytes(DEFAULT_ENCODING));
+        } catch (UnsupportedEncodingException e) {
+            return null;
+        }
+    }//base64encode
+
+    public static String base64decode(String text) {
+        try {
+            return new String(dec.decodeBuffer(text), DEFAULT_ENCODING);
+        } catch (IOException e) {
+            return null;
+        }
+    }//base64decode
+  
+}
