@@ -1,3 +1,6 @@
+
+import java.util.Base64.Encoder;
+
 public class EncryptUtils {
     public static final String DEFAULT_ENCODING = "UTF-8"; 
     static BASE64Encoder enc = new BASE64Encoder();
