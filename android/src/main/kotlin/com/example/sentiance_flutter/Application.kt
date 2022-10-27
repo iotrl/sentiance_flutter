@@ -15,7 +15,7 @@ class Application : FlutterApplication(), PluginRegistry.PluginRegistrantCallbac
         android.util.Log.e("TAG", "onCreate:initt " )
     }
 
-    override fun registerWith(registry: PluginRegistry?) {
+    override fun registerWith(registry: PluginRegistry) {
 
     }
 }
