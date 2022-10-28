@@ -27,6 +27,7 @@
   <component name="ChangeListManager">
     <list default="true" id="cb96506b-70cd-4d5a-bd32-a612bd4e1030" name="Default Changelist" comment="&quot;Removed unnecessary comments&quot;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/kotlin/com/example/sentiance_flutter/EncryptUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/kotlin/com/example/sentiance_flutter/EncryptUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
