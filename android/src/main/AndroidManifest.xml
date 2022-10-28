@@ -76,7 +76,7 @@
             android:value="2" />
         <activity android:name=".sentiance.PermissionCheckActivity"
             android:theme="@style/NormalTheme"/>
-        <provider
+        <!-- <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileProvider"
             android:exported="false"
@@ -86,7 +86,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepath"
                 tools:replace="android:resource" />
-        </provider>
+        </provider> -->
         <receiver android:name="com.example.sentiance_flutter.MyAlarmReceiver"
          android:exported="true">
             <intent-filter>
