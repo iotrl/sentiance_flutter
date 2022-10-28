@@ -1,6 +1,6 @@
 package com.example.sentiance_flutter;
 
-import java.util.Base64.Encoder;
+import java.util.*;
 
 public class EncryptUtils {
     public static final String DEFAULT_ENCODING = "UTF-8"; 
@@ -10,7 +10,7 @@ public class EncryptUtils {
     public static String base64encode(String text) {
         try {
             return enc.encode(text.getBytes(DEFAULT_ENCODING));
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             return null;
         }
     }//base64encode
@@ -18,7 +18,7 @@ public class EncryptUtils {
     public static String base64decode(String text) {
         try {
             return new String(dec.decodeBuffer(text), DEFAULT_ENCODING);
-        } catch (IOException e) {
+        } catch (Exception e) {
             return null;
         }
     }//base64decode
