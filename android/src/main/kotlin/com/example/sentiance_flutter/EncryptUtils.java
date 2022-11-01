@@ -1,6 +1,7 @@
 package com.example.sentiance_flutter;
 
 import java.util.*;
+import android.util.Log;
 
 public class EncryptUtils {
     // public static final String DEFAULT_ENCODING = "UTF-8"; 
