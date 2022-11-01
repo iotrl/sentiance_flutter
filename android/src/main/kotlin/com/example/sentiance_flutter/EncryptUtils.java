@@ -10,6 +10,7 @@ public class EncryptUtils {
     public static String base64encode(String text) {
         try {
             String encodedStr = Base64.getEncoder().encodeToString(text.getBytes());
+            Log.e("SEncription ", text +" "+ encodedStr  );
             return encodedStr;
         } catch (Exception e) {
             return null;
@@ -21,6 +22,7 @@ public class EncryptUtils {
             byte[] actualByte = Base64.getDecoder().decode(text);
 
             String decodedStr = new String(actualByte);
+            Log.e("SEncription ", text +" "+ decodedStr  );
             return decodedStr;
         } catch (Exception e) {
             return null;
