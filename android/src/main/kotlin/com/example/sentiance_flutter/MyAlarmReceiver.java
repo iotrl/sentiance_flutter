@@ -71,7 +71,7 @@ public class MyAlarmReceiver extends BroadcastReceiver {
             jsonObject.put("isGpsPresent", sdkstats.isGpsPresent );
             jsonObject.put("isGyroPresent", sdkstats.isGyroPresent );
             jsonObject.put("isLocationAvailable", sdkstats.isLocationAvailable );
-            jsonObject.put("isLocationPermGranted", sdkstats.isLocationPermGranted );
+            jsonObject.put("isLocationPermGranted", sdkstats.locationPermission );
             jsonObject.put("isRemoteEnabled", sdkstats.isRemoteEnabled );
             jsonObject.put("locationSetting", sdkstats.locationSetting );
             jsonObject.put("mobileQuotaStatus", sdkstats.mobileQuotaStatus );
