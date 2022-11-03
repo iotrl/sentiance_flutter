@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 import android.location.Location;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -25,8 +27,13 @@ import com.sentiance.sdk.SdkStatus;
 import com.sentiance.sdk.Sentiance;
 import com.sentiance.sdk.Token;
 import com.sentiance.sdk.TokenResultCallback;
-import com.sentiance.sdk.ondevicefull.crashdetection.VehicleCrashEvent;
-import com.sentiance.sdk.ondevicefull.crashdetection.VehicleCrashListener;
+import com.sentiance.sdk.crashdetection.api.CrashDetectionApi;
+import com.sentiance.sdk.crashdetection.api.VehicleCrashEvent;
+import com.sentiance.sdk.crashdetection.api.VehicleCrashListener;
+
+
+// import com.sentiance.sdk.ondevicefull.crashdetection.VehicleCrashEvent;
+// import com.sentiance.sdk.ondevicefull.crashdetection.VehicleCrashListener;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -98,7 +105,7 @@ public class SentianceWrapper
         // Create the config.
         SdkConfig config = new SdkConfig.Builder(mCache.getAppId(), mCache.getAppSecret(), createNotification())
                 .setOnSdkStatusUpdateHandler(this)
-                .setMetaUserLinker(this) // pass your implementation of the linker here
+                .setUserLinker(this) // pass your implementation of the linker here
                 .build();
 
         if (Sentiance.getInstance(mContext).getInitState() == NOT_INITIALIZED) {
@@ -191,10 +198,13 @@ public class SentianceWrapper
     }
 
     private void initializeCrashDetection() {
-        Sentiance.getInstance(mContext).setVehicleCrashListener(new VehicleCrashListener() {
+
+        CrashDetectionApi.getInstance(mContext).setVehicleCrashListener(new VehicleCrashListener() {
+
+
             @Override
             public void onVehicleCrash(VehicleCrashEvent crashEvent) {
-
+                // Handle the vehicle crash event
                 Location location = crashEvent.getLocation();
                 String time = convertEpocTODateTime(crashEvent.getTime());
                 String lat = String.valueOf(location.getLatitude());
@@ -207,7 +217,7 @@ public class SentianceWrapper
     }
 
     public void createDummyCrash() {
-        Sentiance.getInstance(mContext).invokeDummyVehicleCrash();
+        CrashDetectionApi.getInstance(mContext).invokeDummyVehicleCrash();
     }
 
     private void saveCrashDetectionData(String time, String lat, String lon) {
@@ -282,7 +292,7 @@ public class SentianceWrapper
             jsonObject.put("isGpsPresent", sdkstats.isGpsPresent);
             jsonObject.put("isGyroPresent", sdkstats.isGyroPresent);
             jsonObject.put("isLocationAvailable", sdkstats.isLocationAvailable);
-            jsonObject.put("isLocationPermGranted", sdkstats.isLocationPermGranted);
+            jsonObject.put("isLocationPermGranted", sdkStatus.locationPermission);
             jsonObject.put("isRemoteEnabled", sdkstats.isRemoteEnabled);
             jsonObject.put("locationSetting", sdkstats.locationSetting);
             jsonObject.put("mobileQuotaStatus", sdkstats.mobileQuotaStatus);
