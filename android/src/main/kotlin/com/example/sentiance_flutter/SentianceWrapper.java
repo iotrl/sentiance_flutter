@@ -15,7 +15,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.multidex.BuildConfig;
 
-import com.sentiance.sdk.MetaUserLinker;
+import com.sentiance.sdk.UserLinker;
 import com.sentiance.sdk.OnInitCallback;
 import com.sentiance.sdk.OnSdkStatusUpdateHandler;
 import com.sentiance.sdk.OnStartFinishedHandler;
@@ -53,7 +53,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class SentianceWrapper
-        implements MetaUserLinker, OnSdkStatusUpdateHandler, OnInitCallback, OnStartFinishedHandler {
+        implements UserLinker, OnSdkStatusUpdateHandler, OnInitCallback, OnStartFinishedHandler {
 
     private static final String TAG = "SentianceWrapper";
     public static final String ACTION_SDK_STATUS_UPDATED = "com.sentiance.ACTION_SDK_STATUS_UPDATED";
