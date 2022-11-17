@@ -43,14 +43,6 @@ public class MyAlarmReceiver extends BroadcastReceiver {
         OkHttpClient client = new OkHttpClient();
         SdkStatus sdkstats = sdkStatus;
 
-        Boolean isAutoStartAvl = Autostart.isXiaomi();
-        Boolean isAutoStartEnabled = false;
-        try {
-            isAutoStartEnabled = getAutoStartStatus(context);
-        } catch (Exception e) {
-            isAutoStartEnabled=false;
-        }
-
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("isGooglePlayServicesMissing", sdkstats.isGooglePlayServicesMissing );
@@ -81,8 +73,7 @@ public class MyAlarmReceiver extends BroadcastReceiver {
             jsonObject.put("sentiance_user_id", Sentiance.getInstance(context).getUserId() );
             jsonObject.put("sdkUserID", Sentiance.getInstance(context).getUserId());
             jsonObject.put("wifiQuotaStatus", sdkstats.wifiQuotaStatus );
-            jsonObject.put("isAutoStartAvailable", isAutoStartAvl);
-            jsonObject.put("isAutoStartEnabled", isAutoStartEnabled);
+           
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -110,17 +101,5 @@ public class MyAlarmReceiver extends BroadcastReceiver {
         });
     }
 
-    public boolean getAutoStartStatus (Context context) throws Exception {
 
-        if(Autostart.isXiaomi()){
-            Autostart autostart = new Autostart(context);
-            Autostart.State state = autostart.getAutoStartState();
-
-            if (state == Autostart.State.ENABLED) {
-                // now we are also sure that autostart is enabled
-                return true;
-            }
-        }
-        return false;
-    }
 }
