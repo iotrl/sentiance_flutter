@@ -109,13 +109,13 @@ class SentianceFlutter {
     return MobileHealthData.fromJson(jsonDecode(sentianceMobileHealthData));
   }
 
-  static Future<dynamic> get getAutoStartStatus async {
-      var status = await _channel.invokeMethod('getAutoStartStatus');
-    return status;
-  }
+  // static Future<dynamic> get getAutoStartStatus async {
+  //     var status = await _channel.invokeMethod('getAutoStartStatus');
+  //   return status;
+  // }
 
-  static Future<dynamic> get getAutoStartAvl async {
-      var status = await _channel.invokeMethod('getAutoStartAvl');
-    return status;
-  }
+  // static Future<dynamic> get getAutoStartAvl async {
+  //     var status = await _channel.invokeMethod('getAutoStartAvl');
+  //   return status;
+  // }
 }
