@@ -30,6 +30,7 @@ import com.sentiance.sdk.TokenResultCallback;
 import com.sentiance.sdk.crashdetection.api.CrashDetectionApi;
 import com.sentiance.sdk.crashdetection.api.VehicleCrashEvent;
 import com.sentiance.sdk.crashdetection.api.VehicleCrashListener;
+import com.sentiance.sdk.reset.ResetResult;
 
 
 // import com.sentiance.sdk.ondevicefull.crashdetection.VehicleCrashEvent;
@@ -119,18 +120,19 @@ public class SentianceWrapper
     }
 
     public void stopSentianceSdk() {
-        Sentiance.getInstance(mContext).reset(new ResetCallback() {
-            @Override
-            public void onResetSuccess() {
-                Log.e(TAG, "Sentiance SDK was successfully reset");
-
-            }
-
-            @Override
-            public void onResetFailure(ResetFailureReason reason) {
-                Log.e(TAG, "Sentiance SDK reset failed with reason " + reason.name());
-            }
-        });
+//        Sentiance.getInstance(mContext).reset(new ResetCallback() {
+//            @Override
+//            public void onResetSuccess() {
+//                Log.e(TAG, "Sentiance SDK was successfully reset");
+//
+//            }
+//
+//            @Override
+//            public void onResetFailure(ResetFailureReason reason) {
+//                Log.e(TAG, "Sentiance SDK reset failed with reason " + reason.name());
+//            }
+//        });
+        Sentiance.getInstance(mContext).reset().addOnSuccessListener(resetResult ->  Log.e(TAG, "Sentiance SDK was successfully reset")).addOnFailureListener(resetError ->     Log.e(TAG, "Sentiance SDK reset failed with reason " + resetError.getReason()));
 
     }
 

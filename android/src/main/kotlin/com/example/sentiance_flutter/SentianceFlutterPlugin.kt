@@ -12,6 +12,7 @@ import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.os.Build
 import android.util.Log
 import androidx.annotation.NonNull
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat.startActivity
 import com.example.sentiance_flutter.sentiance.PermissionCheckActivity
 import com.example.sentiance_flutter.sentiance.PermissionManager
@@ -57,6 +58,7 @@ class SentianceFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     }
  
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         Log.e("LogS", "onMethodCall");
         if (call.method == "enableLocation") {
@@ -105,7 +107,7 @@ class SentianceFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         } else if (call.method == "stopSdk") {
          
             SentianceWrapper(context).stopSentianceSdk()
-            result.success(Sentiance.getInstance(context).sdkStatus.startStatus.name)
+            result.success(Sentiance.getInstance(context).sdkStatus.detectionStatus.name)
         } else if (call.method == "startSdk") {
           
             if (Sentiance.getInstance(context).initState == InitState.INITIALIZED) {
