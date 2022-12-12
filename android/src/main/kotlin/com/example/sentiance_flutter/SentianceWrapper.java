@@ -137,7 +137,7 @@ public class SentianceWrapper
     }
 
     public void startSentianceSdk() {
-        Sentiance.getInstance(mContext).start(this);
+        Sentiance.getInstance(mContext).enableDetections();
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(ACTION_SDK_STATUS_UPDATED));
     }
 
