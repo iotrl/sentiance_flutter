@@ -56,6 +56,12 @@ class SentianceFlutter {
     return initSentiance;
   }
 
+//////
+   static Future<dynamic> get getPermissions async {
+    var getPermissions = await _channel.invokeMethod('getPermissions');
+    return getPermissions;
+  }
+
   // get the sentiance data
   static Future<dynamic> get getSentianceData async {
     var sentianceData = await _channel.invokeMethod('getSentianceData');

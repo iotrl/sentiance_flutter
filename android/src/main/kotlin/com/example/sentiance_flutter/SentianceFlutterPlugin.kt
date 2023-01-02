@@ -68,11 +68,7 @@ class SentianceFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 startActivity(context, intent, null);
             }
         } else if (call.method == "intialiseSdk") {
-            if (!PermissionManager(activity).getNotGrantedPermissions().isEmpty()) {
-                val intent = Intent(activity, PermissionCheckActivity::class.java)
-                intent.flags = FLAG_ACTIVITY_NEW_TASK
-                startActivity(context, intent, null);
-            }
+            
 
             var data = call.arguments as HashMap<String, Any>
 
@@ -91,7 +87,7 @@ class SentianceFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 cache.setCustomerId(data1["customer_id"].toString())
                 SentianceWrapper(context).initializeSentianceSdk()
                 SentianceWrapper(context).getStatus(result)
-                result.success(Sentiance.getInstance(context).sdkStatus.startStatus.name)
+                result.success(Sentiance.getInstance(context).sdkStatus.detectionStatus.name)
             }
           
 
@@ -107,6 +103,15 @@ class SentianceFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         } else if (call.method == "stopSdk") {
          
             SentianceWrapper(context).stopSentianceSdk()
+            result.success(Sentiance.getInstance(context).sdkStatus.detectionStatus.name)
+        }else if (call.method == "getPermissions") {
+
+            if (!PermissionManager(activity).getNotGrantedPermissions().isEmpty()) {
+                val intent = Intent(activity, PermissionCheckActivity::class.java)
+                intent.flags = FLAG_ACTIVITY_NEW_TASK
+                startActivity(context, intent, null);
+            }
+           
             result.success(Sentiance.getInstance(context).sdkStatus.detectionStatus.name)
         } else if (call.method == "startSdk") {
           
@@ -167,6 +172,7 @@ class SentianceFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         //     result.success(SentianceWrapper(context).getAutoStartAvl());
             
         // }
+
         else {
             
             result.notImplemented()
