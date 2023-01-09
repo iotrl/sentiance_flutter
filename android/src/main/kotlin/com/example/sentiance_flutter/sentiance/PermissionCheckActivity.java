@@ -55,16 +55,17 @@ public class PermissionCheckActivity extends Activity {
     }
 
     private void showExplanation (final Permission p) {
-        new AlertDialog.Builder(PermissionCheckActivity.this)
-                .setTitle(p.getDialogTitle())
-                .setMessage(p.getDialogMessage())
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        requestPermission(p, true);
-                    }
-                })
-                .show();
+        requestPermission(p, true);
+        // new AlertDialog.Builder(PermissionCheckActivity.this)
+        //         .setTitle(p.getDialogTitle())
+        //         .setMessage(p.getDialogMessage())
+        //         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        //             @Override
+        //             public void onClick(DialogInterface dialog, int which) {
+                        
+        //             }
+        //         })
+        //         .show();
     }
 
     private void startMain() {

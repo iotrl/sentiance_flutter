@@ -62,12 +62,12 @@ class SentianceFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         Log.e("LogS", "onMethodCall");
         if (call.method == "enableLocation") {
-            // if (!PermissionManager(activity).getNotGrantedPermissions().isEmpty()) {
-            //     val intent = Intent(activity, PermissionCheckActivity::class.java)
-            //     intent.flags = FLAG_ACTIVITY_NEW_TASK
-            //     startActivity(context, intent, null);
-            // }
-            PermissionManager(activity).bgPermission();
+            if (!PermissionManager(activity).getNotGrantedPermissions().isEmpty()) {
+                val intent = Intent(activity, PermissionCheckActivity::class.java)
+                intent.flags = FLAG_ACTIVITY_NEW_TASK
+                startActivity(context, intent, null);
+            }
+          
         } else if (call.method == "intialiseSdk") {
             
 
