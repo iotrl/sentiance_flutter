@@ -122,7 +122,7 @@ public class PermissionManager {
     }
 
 
-    private void bgPermission(){
+    public void bgPermission(){
         ActivityCompat.requestPermissions(mActivity,
                                     new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION}, BACKGROUND_LOCATION_PERMISSION_CODE);
     }
