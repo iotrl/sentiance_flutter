@@ -7,6 +7,9 @@ import androidx.annotation.RequiresApi;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 
 public class PermissionManager {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 15440;
