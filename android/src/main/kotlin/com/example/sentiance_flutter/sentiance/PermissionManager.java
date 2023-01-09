@@ -80,11 +80,11 @@ public class PermissionManager {
             list.addAll(getPreRLocationPermissions());
         }
 
-        if (isQPlus()) {
-            list.add(new Permission("Activity", new String[] {Manifest.permission.ACTIVITY_RECOGNITION},
-                    ACTIVITY_PERMISSION_REQUEST_CODE,
-                    TITLE_ACTIVITY, MESSAGE_ACTIVITY));
-        }
+        // if (isQPlus()) {
+        //     list.add(new Permission("Activity", new String[] {Manifest.permission.ACTIVITY_RECOGNITION},
+        //             ACTIVITY_PERMISSION_REQUEST_CODE,
+        //             TITLE_ACTIVITY, MESSAGE_ACTIVITY));
+        // }
 
 
         return list;
@@ -120,5 +120,18 @@ public class PermissionManager {
         permissions.add(bgLocation);
         return permissions;
     }
+
+
+    private void bgPermission(){
+        ActivityCompat.requestPermissions(mActivity,
+                                    new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION}, BACKGROUND_LOCATION_PERMISSION_CODE);
+    }
+
+
+
+    }
+
+
+
 }
 
