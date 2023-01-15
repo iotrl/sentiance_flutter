@@ -195,7 +195,7 @@ class SentianceFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         val alarmManager = context.getSystemService(FlutterActivity.ALARM_SERVICE) as AlarmManager
         val i = Intent(context, MyAlarmReceiver::class.java)
         val pendingIntent =
-            PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE);
 
         if (Build.VERSION.SDK_INT >= 19) {
             alarmManager.setRepeating(
