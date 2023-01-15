@@ -35,7 +35,7 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize"
             tools:ignore="IntentFilterExportedReceiver"
-            android:exported="true"
+            android:exported="false"
             >
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user
