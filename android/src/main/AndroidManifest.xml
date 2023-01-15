@@ -34,7 +34,9 @@
             android:hardwareAccelerated="true"
             android:exported="false"
             android:windowSoftInputMode="adjustResize"
-            tools:ignore="IntentFilterExportedReceiver">
+            tools:ignore="IntentFilterExportedReceiver"
+            android:exported="true"
+            >
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user
                  while the Flutter UI initializes. After that, this theme continues
