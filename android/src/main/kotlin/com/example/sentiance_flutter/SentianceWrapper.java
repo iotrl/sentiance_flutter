@@ -138,7 +138,7 @@ public class SentianceWrapper
 
     public void startSentianceSdk() {
         Sentiance.getInstance(mContext).enableDetections();
-        LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(ACTION_SDK_STATUS_UPDATED));
+        // LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(ACTION_SDK_STATUS_UPDATED));
     }
 
     @Override
@@ -151,13 +151,13 @@ public class SentianceWrapper
         Sentiance.getInstance(mContext).start(this);
         // initialze crash Detection
 
-        LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(ACTION_INIT_SUCCEEDED));
+        // LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(ACTION_INIT_SUCCEEDED));
 
     }
 
     @Override
     public void onInitFailure(InitIssue initIssue, @Nullable Throwable throwable) {
-        LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(ACTION_INIT_FAILED));
+        // LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(ACTION_INIT_FAILED));
         Log.e(TAG, "Could not initialize SDK: " + initIssue);
 
         switch (initIssue) {
@@ -184,7 +184,7 @@ public class SentianceWrapper
     @Override
     public void onStartFinished(SdkStatus sdkStatus) {
         Log.i(TAG, "SDK start finished with status: " + sdkStatus.startStatus);
-        LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(ACTION_SDK_STATUS_UPDATED));
+        // LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(ACTION_SDK_STATUS_UPDATED));
     }
 
     @Override
@@ -194,7 +194,7 @@ public class SentianceWrapper
         // The status update is broadcast internally; this is so the other components of
         // the app
         // (specifically MainActivity) can react on this.
-        LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(ACTION_SDK_STATUS_UPDATED));
+        // LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(ACTION_SDK_STATUS_UPDATED));
         updateToServer(sdkStatus);
 
     }
