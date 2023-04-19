@@ -45,8 +45,14 @@ import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import io.flutter.plugin.common.MethodChannel;
@@ -115,6 +121,7 @@ public class SentianceWrapper
             Sentiance.getInstance(mContext).init(config, this);
         } else {
             Log.e(TAG, "initializeSentianceSdk: " + Sentiance.getInstance(mContext).getInitState());
+            initializeCrashDetection();
 
         }
     }
@@ -138,6 +145,7 @@ public class SentianceWrapper
 
     public void startSentianceSdk() {
         Sentiance.getInstance(mContext).enableDetections();
+        initializeCrashDetection();
         // LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(ACTION_SDK_STATUS_UPDATED));
     }
 
@@ -149,6 +157,7 @@ public class SentianceWrapper
         // Sentiance SDK was successfully initialized, we can now start it.
 
         Sentiance.getInstance(mContext).start(this);
+        initializeCrashDetection();
         // initialze crash Detection
 
         // LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(ACTION_INIT_SUCCEEDED));
@@ -204,14 +213,17 @@ public class SentianceWrapper
         CrashDetectionApi.getInstance(mContext).setVehicleCrashListener(new VehicleCrashListener() {
 
 
+
             @Override
             public void onVehicleCrash(VehicleCrashEvent crashEvent) {
                 // Handle the vehicle crash event
+                Log.e(TAG, "Crash invoked ");
                 Location location = crashEvent.getLocation();
                 String time = convertEpocTODateTime(crashEvent.getTime());
                 String lat = String.valueOf(location.getLatitude());
                 String lon = String.valueOf(location.getLongitude());
-                saveCrashDetectionData(time, lat, lon);
+                int confidence = crashEvent.getConfidence();
+                saveCrashDetectionData(time, lat, lon, confidence);
 
             }
         });
@@ -219,15 +231,16 @@ public class SentianceWrapper
     }
 
     public void createDummyCrash() {
+        Log.e(TAG, "Dummy crash invoked");
         CrashDetectionApi.getInstance(mContext).invokeDummyVehicleCrash();
     }
 
-    private void saveCrashDetectionData(String time, String lat, String lon) {
+    private void saveCrashDetectionData(String time, String lat, String lon, int confidence) {
 
         OkHttpClient client = new OkHttpClient();
 
         String jsonBody = "{\"userId\":\"" + mCache.getUserId() + "\",\"customerId\":\"" + mCache.getCustomerId()
-                + "\",\"location\":{\"lat\":\"" + lat + "\",\"lng\":\"" + lon + "\"},\"time\":\"" + time + "\"}";
+                + "\",\"location\":{\"lat\":\"" + lat + "\",\"lng\":\"" + lon + "\"},\"time\":\"" + time + "\",\"confidence\":\"" + confidence + "\"}";
         Log.e("Crash Detection Json", jsonBody);
 
         Request request1 = new Request.Builder()
@@ -257,8 +270,11 @@ public class SentianceWrapper
     }
 
     private String convertEpocTODateTime(long time) {
-        String date = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date(time));
-        return date;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String formattedDateTime = dateFormat.format(new Date(time));
+//        String date = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date(time));
+        return formattedDateTime;
     }
 
     private void updateToServer(SdkStatus sdkStatus) {
