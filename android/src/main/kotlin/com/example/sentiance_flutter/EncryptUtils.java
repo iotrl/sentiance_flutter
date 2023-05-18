@@ -23,7 +23,7 @@ public class EncryptUtils {
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
-             String encodedStr = Base64.getEncoder().encodeToString(text.getBytes());
+             String encodedStr = android.util.Base64.getEncoder().encodeToString(text.getBytes());
         //    return encodedStr;
              } else {
             byte[] data = text.getBytes("UTF-8");
@@ -46,7 +46,7 @@ public class EncryptUtils {
 
            
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.FROYO) {
-                byte[] actualByte = Base64.getDecoder().decode(text);
+                byte[] actualByte = android.util.Base64.getDecoder().decode(text);
 
                 String decodedStr = new String(actualByte);
                
