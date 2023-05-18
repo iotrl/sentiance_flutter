@@ -5,7 +5,7 @@ import java.util.*;
 import android.os.Build;
 import android.util.Log;
 import android.util.Base64;
-import org.apache.commons.codec.binary.Base64;
+
 
 public class EncryptUtils {
     // public static final String DEFAULT_ENCODING = "UTF-8"; 
