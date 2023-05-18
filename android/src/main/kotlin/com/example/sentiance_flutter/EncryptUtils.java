@@ -21,11 +21,12 @@ public class EncryptUtils {
             // String encodedStr = Base64.getEncoder().encodeToString(text.getBytes());
         //    return encodedStr;
 
-        byte[] data = text.getBytes("UTF-8");
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
              String encodedStr = Base64.getEncoder().encodeToString(text.getBytes());
         //    return encodedStr;
              } else {
+            byte[] data = text.getBytes("UTF-8");
                 return org.apache.commons.codec.binary.Base64.encodeBase64String(data);
              }
             
@@ -34,7 +35,7 @@ public class EncryptUtils {
         }
     }//base64encode
 
-    public static String base64decode(String input) {
+    public static String base64decode(String text) {
         try {
             
 
@@ -51,7 +52,7 @@ public class EncryptUtils {
                
                 return decodedStr;
             } else {
-                byte[] decodedBytes = org.apache.commons.codec.binary.Base64.decodeBase64(data);
+                byte[] decodedBytes = org.apache.commons.codec.binary.Base64.decodeBase64(text);
                 return new String(decodedBytes, "UTF-8");
             }
          
@@ -61,25 +62,4 @@ public class EncryptUtils {
     }//base64decode
 
 
-    private static int getIndex(char c) {
-        if (c >= 'A' && c <= 'Z') {
-            return c - 'A';
-        }
-        if (c >= 'a' && c <= 'z') {
-            return c - 'a' + 26;
-        }
-        if (c >= '0' && c <= '9') {
-            return c - '0' + 52;
-        }
-        if (c == '+') {
-            return 62;
-        }
-        if (c == '/') {
-            return 63;
-        }
-        if (c == '=') {
-            return 64;
-        }
-        throw new IllegalArgumentException("Invalid Base64 character: " + c);
-    }
 }
