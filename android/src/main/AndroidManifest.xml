@@ -59,14 +59,15 @@
         </activity>
 
 
-        <!-- <receiver android:name="yukams.app.background_locator_2.BootBroadcastReceiver"
-            android:enabled="true">
+        <!-- <receiver android:name="rekab.app.background_locator.BootBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
         <service
-            android:name="yukams.app.background_locator_2.IsolateHolderService"
+            android:name="rekab.app.background_locator.IsolateHolderService"
             android:permission="android.permission.FOREGROUND_SERVICE"
             android:exported="true"
             android:foregroundServiceType = "location"
