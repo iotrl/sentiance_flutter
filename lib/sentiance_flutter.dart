@@ -57,7 +57,7 @@ class SentianceFlutter {
   }
 
 //////
-   static Future<dynamic> get getPermissions async {
+  static Future<dynamic> get getPermissions async {
     var getPermissions = await _channel.invokeMethod('getPermissions');
     return getPermissions;
   }
@@ -113,6 +113,12 @@ class SentianceFlutter {
     var sentianceMobileHealthData =
         await _channel.invokeMethod('getMobileHealthData');
     return MobileHealthData.fromJson(jsonDecode(sentianceMobileHealthData));
+  }
+
+  static Future<dynamic> createUser(String authenticationCode) async {
+    var result = await _channel
+        .invokeMethod('createUser', {'authenticationCode': authenticationCode});
+    return result;
   }
 
   // static Future<dynamic> get getAutoStartStatus async {
