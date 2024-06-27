@@ -57,7 +57,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.0'
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     implementation 'com.android.support:multidex:1.0.3'
-    implementation (platform('com.sentiance:sdk-bom:6.3.4'))
+    implementation (platform('com.sentiance:sdk-bom:6.7.4'))
     implementation ('com.sentiance:sdk')
     implementation ('com.sentiance:sdk-crash-detection')
     implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
