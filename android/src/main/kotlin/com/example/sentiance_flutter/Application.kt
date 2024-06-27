@@ -9,8 +9,8 @@ class Application : FlutterApplication(), PluginRegistry.PluginRegistrantCallbac
 
     override fun onCreate() {
         super.onCreate()
-        FlutterMain.startInitialization(this)
         initializeSentiance()
+        FlutterMain.startInitialization(this)
         SentianceWrapper(this).initializeSentianceSdk()
         MultiDex.install(this)
         android.util.Log.e("TAG", "onCreate:initt " )
