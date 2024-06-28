@@ -88,11 +88,11 @@ public class SentianceWrapper
     }
 
     public void initializeSentiance() {
-        val result = Sentiance.getInstance(this).initialize()
+        val result = Sentiance.getInstance(this).initialize();
         if (result.isSuccessful) {
-            Log.d(TAG, "Initialization succeeded")
+            Log.e(TAG, "Initialization succeeded");
         } else {
-            Log.e(TAG, "Initialization failed with reason ${result.failureReason!!.name}", result.throwable)
+            Log.e(TAG, "Initialization failed with reason ${result.failureReason!!.name}", result.throwable);
         }
     }
 
