@@ -28,7 +28,7 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.Registrar
 import com.sentiance.sdk.Sentiance
-import com.sentiance.sdk.UserCreationOptions
+import com.sentiance.sdk.usercreation.UserCreationOptions
 
 
 /** FluttertoastPlugin */
