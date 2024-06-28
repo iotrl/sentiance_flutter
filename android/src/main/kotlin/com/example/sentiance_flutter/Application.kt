@@ -24,7 +24,9 @@ class Application : FlutterApplication(), PluginRegistry.PluginRegistrantCallbac
     fun initializeSentiance() {
     val result = Sentiance.getInstance(this).initialize()
     if (result.isSuccessful) {
-        //Log.d(TAG, "Initialization succeeded")
-    }
+        Log.e("TAG", "Initialization succeeded")
+    }else {
+    Log.e("TAG", "Intialization failed with reason ${result.failureReason!!.name}");
+}
 }
 }
