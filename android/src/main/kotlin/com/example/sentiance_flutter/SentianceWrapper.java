@@ -16,7 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.multidex.BuildConfig;
-
+import com.sentiance.sdk.UserCreationOptions;
 import com.sentiance.sdk.UserLinker;
 import com.sentiance.sdk.OnInitCallback;
 import com.sentiance.sdk.OnSdkStatusUpdateHandler;
@@ -85,6 +85,30 @@ public class SentianceWrapper
         dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
         mContext = context.getApplicationContext();
         mCache = new Cache(context);
+    }
+
+    private fun initializeSentiance() {
+        val result = Sentiance.getInstance(this).initialize()
+        if (result.isSuccessful) {
+            Log.d(TAG, "Initialization succeeded")
+        } else {
+            Log.e(TAG, "Initialization failed with reason ${result.failureReason!!.name}", result.throwable)
+        }
+    }
+
+    private void createUser(String authenticationCode) {
+        UserCreationOptions options = new UserCreationOptions.Builder(authenticationCode).build();
+    
+        Sentiance.getInstance(context).createUser(options).addOnCompleteListener(operation -> {
+            if (operation.isSuccessful()) {
+                String userId = operation.getResult().getUserInfo().getUserId();
+                Log.d(TAG, "Created a user with ID: " + userId);
+            } else {
+                String reason = operation.getError().getReason().name();
+                String details = operation.getError().getDetails();
+                Log.e(TAG, "User creation failed with reason " + reason + ". Details: " + details);
+            }
+        });
     }
 
     public void initializeSentianceSdk() {
