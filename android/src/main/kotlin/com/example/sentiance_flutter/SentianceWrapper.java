@@ -88,18 +88,18 @@ public class SentianceWrapper
     }
 
     public void initializeSentiance() {
-        val result = Sentiance.getInstance(this).initialize();
+        Result result = Sentiance.getInstance(mContext).initialize();
         if (result.isSuccessful) {
             Log.e(TAG, "Initialization succeeded");
         } else {
-            Log.e(TAG, "Initialization failed with reason ${result.failureReason!!.name}", result.throwable);
+            Log.e(TAG, "Initialization failed with reason " + result.getFailureReason().name(), result.getThrowable());
         }
     }
 
     public void createUser(String authenticationCode) {
         UserCreationOptions options = new UserCreationOptions.Builder(authenticationCode).build();
     
-        Sentiance.getInstance(context).createUser(options).addOnCompleteListener(operation -> {
+        Sentiance.getInstance(mContext).createUser(options).addOnCompleteListener(operation -> {
             if (operation.isSuccessful()) {
                 String userId = operation.getResult().getUserInfo().getUserId();
                 Log.d(TAG, "Created a user with ID: " + userId);
