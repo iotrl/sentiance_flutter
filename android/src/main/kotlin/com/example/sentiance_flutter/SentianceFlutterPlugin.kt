@@ -27,6 +27,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.Registrar
+import com.sentiance.sdk.Sentiance
 
 
 /** FluttertoastPlugin */
@@ -138,7 +139,7 @@ class SentianceFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         else if (call.method == "createUser") {
             val authenticationCode = call.argument<String>("authenticationCode")
             if (authenticationCode != null) {
-                SentianceWrapper(context).createUser(authenticationCode)
+                createUser(authenticationCode)
                 result.success("User creation initiated")
             } else {
                 result.error("INVALID_ARGUMENT", "Authentication code is required", null)
@@ -190,6 +191,20 @@ class SentianceFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         }
 
     }
+
+    fun createUser(context: Context, authenticationCode: String) {
+    val options = UserCreationOptions.Builder(authenticationCode).build()
+
+    Sentiance.getInstance(context).createUser(options).addOnCompleteListener { operation ->
+        if (operation.isSuccessful) {
+            val userInfo = operation.result.userInfo
+            //Log.d(TAG, "Created a user with ID: ${userInfo.userId}")
+        } else {
+            val error = operation.error
+            //Log.e(TAG, "User creation failed with reason ${error.reason.name}. Details: ${error.details}")
+        }
+    }
+ }
 
 
     fun refreshStatus() {

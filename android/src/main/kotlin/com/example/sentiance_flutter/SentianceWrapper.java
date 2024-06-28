@@ -16,7 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.multidex.BuildConfig;
-import com.sentiance.sdk.UserCreationOptions;
+//import com.sentiance.sdk.UserCreationOptions;
 import com.sentiance.sdk.UserLinker;
 import com.sentiance.sdk.OnInitCallback;
 import com.sentiance.sdk.OnSdkStatusUpdateHandler;
@@ -87,29 +87,29 @@ public class SentianceWrapper
         mCache = new Cache(context);
     }
 
-    public void initializeSentiance() {
-        Result result = Sentiance.getInstance(mContext).initialize();
-        if (result.isSuccessful) {
-            Log.e(TAG, "Initialization succeeded");
-        } else {
-            Log.e(TAG, "Initialization failed with reason " + result.getFailureReason().name(), result.getThrowable());
-        }
-    }
+    // public void initializeSentiance() {
+    //     Result result = Sentiance.getInstance(mContext).initialize();
+    //     if (result.isSuccessful) {
+    //         Log.e(TAG, "Initialization succeeded");
+    //     } else {
+    //         Log.e(TAG, "Initialization failed with reason " + result.getFailureReason().name(), result.getThrowable());
+    //     }
+    // }
 
-    public void createUser(String authenticationCode) {
-        UserCreationOptions options = new UserCreationOptions.Builder(authenticationCode).build();
+    // public void createUser(String authenticationCode) {
+    //     UserCreationOptions options = new UserCreationOptions.Builder(authenticationCode).build();
     
-        Sentiance.getInstance(mContext).createUser(options).addOnCompleteListener(operation -> {
-            if (operation.isSuccessful()) {
-                String userId = operation.getResult().getUserInfo().getUserId();
-                Log.d(TAG, "Created a user with ID: " + userId);
-            } else {
-                String reason = operation.getError().getReason().name();
-                String details = operation.getError().getDetails();
-                Log.e(TAG, "User creation failed with reason " + reason + ". Details: " + details);
-            }
-        });
-    }
+    //     Sentiance.getInstance(mContext).createUser(options).addOnCompleteListener(operation -> {
+    //         if (operation.isSuccessful()) {
+    //             String userId = operation.getResult().getUserInfo().getUserId();
+    //             Log.d(TAG, "Created a user with ID: " + userId);
+    //         } else {
+    //             String reason = operation.getError().getReason().name();
+    //             String details = operation.getError().getDetails();
+    //             Log.e(TAG, "User creation failed with reason " + reason + ". Details: " + details);
+    //         }
+    //     });
+    // }
 
     public void initializeSentianceSdk() {
         if (mCache.getUserToken() == null) {
