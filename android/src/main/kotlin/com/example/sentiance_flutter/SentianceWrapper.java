@@ -87,7 +87,7 @@ public class SentianceWrapper
         mCache = new Cache(context);
     }
 
-    private fun initializeSentiance() {
+    public void initializeSentiance() {
         val result = Sentiance.getInstance(this).initialize()
         if (result.isSuccessful) {
             Log.d(TAG, "Initialization succeeded")
@@ -96,7 +96,7 @@ public class SentianceWrapper
         }
     }
 
-    private void createUser(String authenticationCode) {
+    public void createUser(String authenticationCode) {
         UserCreationOptions options = new UserCreationOptions.Builder(authenticationCode).build();
     
         Sentiance.getInstance(context).createUser(options).addOnCompleteListener(operation -> {
